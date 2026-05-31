@@ -1,58 +1,317 @@
 ---
 // src/pages/index.astro
+import Layout from "../layouts/Layout.astro";
+import ThemeToggle from "../components/ThemeToggle.tsx";
+import SignupForm from "../components/SignupForm.tsx";
+
 const site = "https://threadradar.xyz";
-const title = "threadradar.xyz";
-const description = "<fill in: 1-2 sentence value prop for SEO description>";
+const title = "ThreadRadar — The Friday briefing fractional CMOs read first";
+const description =
+  "Weekly written intelligence from Reddit, Discord, and niche forums for the brands you advise. Built for fractional CMOs and operators juggling 3–5 brands.";
+const year = new Date().getFullYear();
+
+const steps = [
+  {
+    n: "01",
+    t: "You name the brand and the rooms",
+    d: "Tell us the brand, its category, and the subreddits, Discords, and forums where its customers actually talk. We'll add the ones you missed.",
+  },
+  {
+    n: "02",
+    t: "We listen all week",
+    d: "Our analysts and tooling read every relevant thread. We weight signal by who's posting, not just upvotes. Moderators and repeat reviewers count more.",
+  },
+  {
+    n: "03",
+    t: "You get one brief on Friday at 7am",
+    d: "A written summary, not a dashboard. What was said, where, by whom, and the one action we'd recommend this week. Forward to your client as-is.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Is this a dashboard?",
+    a: "No. It's an email. One written brief per brand, delivered Friday at 7am your timezone. If you wanted a dashboard, you'd already have five.",
+  },
+  {
+    q: "Which communities do you cover?",
+    a: "Reddit, Discord servers, and niche forums (Indie Hackers, Hacker News, vertical communities). You name the rooms; we'll add the ones you missed.",
+  },
+  {
+    q: "Who writes the briefs?",
+    a: "A small team of analysts using internal tooling to surface threads. Every brief is read and edited by a human before it ships.",
+  },
+  {
+    q: "When does it launch?",
+    a: "We're onboarding the first 25 fractional CMOs in the coming weeks. Reserve a seat and we'll email you before the first brief goes out.",
+  },
+];
 ---
-<!doctype html>
-<html lang="en">
-  <head>
+
+<Layout>
+  <Fragment slot="head">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={site} />
+    <link rel="canonical" href={`${site}/`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={site} />
-    <meta property="og:site_name" content="threadradar.xyz" />
+    <meta property="og:title" content="ThreadRadar — Friday community intelligence for fractional CMOs" />
+    <meta
+      property="og:description"
+      content="A written brief in your inbox every Friday at 7am. No dashboards. No alerts. Just what was said, where, and what it means."
+    />
+    <meta property="og:url" content={`${site}/`} />
+    <meta property="og:site_name" content="ThreadRadar" />
 
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content="ThreadRadar — Friday community intelligence" />
+    <meta
+      name="twitter:description"
+      content="Weekly written brief on what's being said about your brands in the places that matter."
+    />
 
-    <!-- JSON-LD structured data: Organization + WebSite (static; domain
-         is known at scaffold time. Update description by hand if needed.) -->
-    <script type="application/ld+json">
+    <!-- JSON-LD structured data: Organization + WebSite + Product -->
+    <script type="application/ld+json" is:inline>
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Organization",
       "@id": "https://threadradar.xyz/#organization",
-      "name": "threadradar.xyz",
+      "name": "ThreadRadar",
       "url": "https://threadradar.xyz/"
     },
     {
       "@type": "WebSite",
       "@id": "https://threadradar.xyz/#website",
       "url": "https://threadradar.xyz/",
-      "name": "threadradar.xyz",
+      "name": "ThreadRadar",
       "publisher": { "@id": "https://threadradar.xyz/#organization" }
+    },
+    {
+      "@type": "Product",
+      "name": "ThreadRadar",
+      "description": "Weekly written community intelligence briefings for fractional CMOs. Monitors Reddit, Discord, and niche forums.",
+      "offers": {
+        "@type": "Offer",
+        "price": "150",
+        "priceCurrency": "USD",
+        "description": "$150 per brand per month"
+      }
     }
   ]
 }
     </script>
-  </head>
-  <body>
-    <main>
-      <h1>{title}</h1>
-      <p>Scaffolded via <code>portfolio new bootstrap</code>.</p>
-    </main>
-  </body>
-</html>
+  </Fragment>
+
+  <main class="min-h-screen bg-background text-foreground">
+    <!-- Header -->
+    <header class="border-b border-border/60">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+        <a href="/" class="flex items-center gap-2 text-sm font-semibold tracking-tight">
+          <span class="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden></span>
+          ThreadRadar
+        </a>
+        <nav class="hidden gap-7 text-sm text-muted-foreground sm:flex">
+          <a href="#briefing" class="hover:text-foreground">The briefing</a>
+          <a href="#how" class="hover:text-foreground">How it works</a>
+          <a href="#pricing" class="hover:text-foreground">Pricing</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <a
+            href="#signup"
+            class="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:border-accent hover:text-accent"
+          >
+            Get the brief
+          </a>
+          <ThemeToggle client:load />
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto max-w-3xl px-6 pb-20 pt-20 sm:pt-28">
+        <p class="mb-6 text-xs uppercase tracking-[0.18em] text-accent">
+          For fractional CMOs &middot; First 25 seats
+        </p>
+        <h1 class="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
+          The Friday briefing fractional CMOs read
+          <span class="text-accent">before</span> their first call.
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg text-muted-foreground">
+          Every Friday at 7am, you get one written intelligence brief per brand &mdash;
+          what's being said on Reddit, Discord, and the niche forums your clients
+          actually live in. No dashboards. No alerts. Just signal, in your inbox,
+          before the week ends.
+        </p>
+
+        <div id="signup" class="mt-10">
+          <SignupForm client:load />
+          <p class="mt-3 text-xs text-muted-foreground">
+            Reserve a seat in the first cohort. We'll email you before launch &mdash; no spam, no
+            tracking pixels.
+          </p>
+        </div>
+      </div>
+      <div
+        aria-hidden
+        class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
+      >
+      </div>
+    </section>
+
+    <!-- Briefing -->
+    <section id="briefing" class="border-t border-border/60 bg-card/40">
+      <div class="mx-auto max-w-3xl px-6 py-20">
+        <h2 class="mb-8 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          A sample brief
+        </h2>
+        <article class="rounded-lg border border-border bg-background p-8 font-serif sm:p-12">
+          <header class="mb-8 border-b border-border pb-6">
+            <p class="text-xs uppercase tracking-[0.18em] text-accent" style="font-family: var(--font-sans)">
+              Friday Brief &middot; Vol. 14 &middot; Acme Coffee Co.
+            </p>
+            <h3 class="mt-3 text-2xl font-semibold leading-snug text-foreground sm:text-3xl">
+              Sentiment is shifting in r/espresso &mdash; and it's about your grinder, not your beans.
+            </h3>
+          </header>
+
+          <div class="space-y-5 text-[1.02rem] leading-relaxed text-foreground/90">
+            <p>
+              Three threads this week on r/espresso (combined 1,240 upvotes) singled out
+              the new burr set as "stepless but inconsistent." Two of the posters are
+              moderators. The tone is constructive, not hostile &mdash; they want a fix,
+              not a refund.
+            </p>
+            <p>
+              On the Home-Barista Discord (#gear-talk), a respected reviewer mentioned
+              your name unprompted in a comparison with Niche. Worth a thank-you note.
+              Screenshot and link in the appendix.
+            </p>
+            <p>
+              <strong class="text-accent" style="font-family: var(--font-sans)">What it means:</strong>
+              The community is telling you the grinder is the lever, not the beans.
+              Your Q3 messaging is pointed the wrong way. A single technical post from
+              your head of product, this week, would land harder than a campaign.
+            </p>
+          </div>
+
+          <footer class="mt-10 border-t border-border pt-6 text-sm text-muted-foreground" style="font-family: var(--font-sans)">
+            <p>3 conversations &middot; 2 communities &middot; 1 recommended action</p>
+          </footer>
+        </article>
+        <p class="mt-6 text-sm text-muted-foreground">
+          Every Friday. One brand, one page, one recommended action. Forwardable to
+          your client without edits.
+        </p>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="border-t border-border/60">
+      <div class="mx-auto max-w-5xl px-6 py-20">
+        <h2 class="mb-12 text-3xl font-semibold tracking-tight sm:text-4xl">
+          How it works
+        </h2>
+        <ol class="grid gap-10 sm:grid-cols-3">
+          {steps.map((s) => (
+            <li>
+              <div class="mb-4 text-sm font-mono text-accent">{s.n}</div>
+              <h3 class="mb-2 text-lg font-semibold text-foreground">{s.t}</h3>
+              <p class="text-sm leading-relaxed text-muted-foreground">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Who -->
+    <section class="border-t border-border/60 bg-card/40">
+      <div class="mx-auto max-w-3xl px-6 py-20">
+        <h2 class="mb-6 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Built for fractional CMOs and operators juggling 3&ndash;5 brands.
+        </h2>
+        <p class="text-lg text-muted-foreground">
+          You don't have time to lurk on Reddit for every client. You also can't show
+          up to a Monday call without knowing what their customers said over the
+          weekend. ThreadRadar is the thing that makes that gap disappear &mdash; without
+          adding another tab to your week.
+        </p>
+        <ul class="mt-8 grid gap-4 text-sm text-foreground/90 sm:grid-cols-2">
+          <li class="rounded-md border border-border bg-background p-4">
+            <strong class="text-foreground">No dashboards.</strong>
+            <span class="text-muted-foreground">A written brief, not a tool to log into.</span>
+          </li>
+          <li class="rounded-md border border-border bg-background p-4">
+            <strong class="text-foreground">No alerts.</strong>
+            <span class="text-muted-foreground">One email, Friday morning. That's the contract.</span>
+          </li>
+          <li class="rounded-md border border-border bg-background p-4">
+            <strong class="text-foreground">No tracking.</strong>
+            <span class="text-muted-foreground">No pixels, no opens, no clicks. Read in peace.</span>
+          </li>
+          <li class="rounded-md border border-border bg-background p-4">
+            <strong class="text-foreground">Forwardable.</strong>
+            <span class="text-muted-foreground">Written to land in a client's inbox unedited.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="border-t border-border/60">
+      <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+        <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Pricing</h2>
+        <p class="mt-3 text-muted-foreground">One number. One brand. One brief.</p>
+        <div class="mx-auto mt-10 max-w-md rounded-lg border border-border bg-card p-8 text-left">
+          <p class="text-xs uppercase tracking-[0.18em] text-accent">Per brand</p>
+          <div class="mt-3 flex items-baseline gap-2">
+            <span class="text-5xl font-semibold tracking-tight">$150</span>
+            <span class="text-muted-foreground">/ month</span>
+          </div>
+          <ul class="mt-6 space-y-2 text-sm text-muted-foreground">
+            <li>&middot; One brand, one Friday brief, every week</li>
+            <li>&middot; Up to 10 communities monitored per brand</li>
+            <li>&middot; Forwardable to your client, no edits required</li>
+            <li>&middot; Cancel anytime, no contract</li>
+          </ul>
+          <a
+            href="#signup"
+            class="mt-8 block rounded-md bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground hover:opacity-90"
+          >
+            Reserve a seat
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="border-t border-border/60 bg-card/40">
+      <div class="mx-auto max-w-3xl px-6 py-20">
+        <h2 class="mb-10 text-3xl font-semibold tracking-tight sm:text-4xl">Questions</h2>
+        <dl class="divide-y divide-border">
+          {faqs.map((i) => (
+            <div class="py-6">
+              <dt class="text-base font-semibold text-foreground">{i.q}</dt>
+              <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">{i.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-border/60">
+      <div class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-4 px-6 py-10 text-xs text-muted-foreground sm:flex-row sm:items-center">
+        <p>&copy; {year} ThreadRadar. A Friday morning habit.</p>
+        <p>No tracking. No pixels. No spam.</p>
+      </div>
+    </footer>
+  </main>
+</Layout>

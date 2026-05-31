@@ -1,0 +1,20 @@
+---
+// src/layouts/Layout.astro
+// Shared chrome: HTML shell, no-FOUC theme-init script, global stylesheet.
+// Per-page SEO/meta is passed in via the `head` named slot so the tags live
+// in the page source (where the SEO regression test reads them).
+import "../styles/global.css";
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <slot name="head" />
+    <script is:inline set:html={themeInitScript}></script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
