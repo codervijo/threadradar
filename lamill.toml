@@ -16,8 +16,7 @@ framework = "astro"
 
 # Tracked todos for threadradar.xyz. status: "done" | "open".
 [[todo]]
-status = "open"
-priority = "high"
+status = "done"
 task = "Fill in [content] block (site_type, primary_keyword, icp, …)"
 
 [[todo]]
@@ -39,11 +38,18 @@ task = "Confirm GSC verification + sitemap submitted (re-run deploy if it timed 
 # Declarative content identity for this site.
 # Authored by the human; consumed by rankmill to generate drafts and run audits.
 # Leave fields empty until you have a deliberate answer. Empty is better than wrong.
-site_type = ""            # e.g. "legal-compliance", "tool", "directory", "blog", "b2c"
-primary_keyword = ""      # the one phrase this site should rank for
-secondary_keywords = []   # 3-8 supporting phrases
-icp = ""                  # ideal customer profile — one sentence, specific role + context
-urgency_trigger = ""      # what makes the reader act now (deadline, penalty, pain)
-penalty = ""              # cost of inaction, in their terms (dollars, risk, time)
-tone = ""                 # e.g. "direct, technical, no fluff" or "warm, plainspoken"
+site_type = "tool"
+primary_keyword = "brand Reddit pulse"
+secondary_keywords = [
+    "community intelligence",
+    "weekly community briefing",
+    "Reddit listening tool",
+    "Discord monitoring",
+    "community sentiment analysis",
+    "fractional CMO tools",
+]
+icp = "The core ICP is an independent fractional CMO running a portfolio of 3–5 consumer or prosumer brand engagements — typically charging $5K–15K/month per client and serving DTC, SaaS, creator-economy, or community-driven businesses. They're a team of one, allergic to dashboards, and graded on whether they sound smart on weekly client calls. They've tried Brandwatch, Sprout, or Sparktoro and bounced off the price and the analyst-required learning curve. They already lurk in client subreddits and Discords manually, know exactly which communities matter, and would happily pay $150/brand to stop. Secondary ICPs: in-house growth leads at sub-$10M brands without a research function, and boutique brand strategy consultancies running similar multi-client setups."
+urgency_trigger = "Upcoming Monday client calls — need to sound prescient without spending hours monitoring communities"
+penalty = "Continue spending 5+ hours/week manually lurking, miss emerging community signals, and risk sounding unprepared on weekly client calls"
+tone = "practical, direct, operator-focused"
 law = ""                  # statute or regulation if applicable, else empty
