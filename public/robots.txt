@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://threadradar.xyz/sitemap.xml
+Sitemap: https://threadradar.xyz/sitemap-index.xml
