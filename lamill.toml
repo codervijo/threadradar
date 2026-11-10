@@ -11,6 +11,10 @@ custom_domains = [
     "threadradar.xyz",
 ]
 
+[index]
+indexnow_key = "1a6abd22ffbbd96e9019a5601d170cc2"
+indexnow_enabled = true
+
 [stack]
 framework = "astro"
 
